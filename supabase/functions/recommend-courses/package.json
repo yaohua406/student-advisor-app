@@ -1,0 +1,20 @@
+{
+  "name": "recommend-courses",
+  "version": "1.0.0",
+  "description": "Supabase function to recommend courses based on user preferences.",
+  "main": "index.js",
+  "scripts": {
+    "build": "tsc",
+    "start": "supabase functions serve recommend-courses",
+    "deploy": "supabase functions deploy recommend-courses"
+  },
+  "dependencies": {
+    "@supabase/supabase-js": "^2.0.0"
+  },
+  "devDependencies": {
+    "typescript": "^4.5.0"
+  },
+  "engines": {
+    "node": ">=14"
+  }
+}
