@@ -19,3 +19,11 @@ export interface Advisor {
     expertise: string;
     contactInfo: string;
 }
+
+export interface UserProfile {
+    name: string;
+    email?: string;
+    institution: string;
+    major: string;
+    desiredJob: string;
+}
