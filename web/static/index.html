@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Student Advisor App (Static)</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="site-header">
+    <h1>Student Advisor App</h1>
+  </header>
+
+  <main class="container">
+    <section id="advisors">
+      <h2>Advisors</h2>
+      <div id="advisor-list" class="grid"></div>
+    </section>
+
+    <section id="courses">
+      <h2>Courses</h2>
+      <div id="course-list" class="grid"></div>
+    </section>
+
+    <section id="recommendations">
+      <h2>Recommendations</h2>
+      <button id="get-recs">Get Recommendations</button>
+      <div id="recs" class="grid"></div>
+    </section>
+  </main>
+
+  <footer class="site-footer">&copy; <span id="year"></span> Student Advisor App</footer>
+
+  <script>
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    const API_BASE = 'http://localhost:8000'; // change if your backend runs elsewhere
+
+    async function fetchAndRender(path, containerId, renderItem) {
+      try {
+        const res = await fetch(API_BASE + path);
+        const data = await res.json();
+        const container = document.getElementById(containerId);
+        container.innerHTML = '';
+        if (!Array.isArray(data)) {
+          container.textContent = 'No data or invalid response.';
+          return;
+        }
+        data.forEach(item => container.appendChild(renderItem(item)));
+      } catch (err) {
+        document.getElementById(containerId).textContent = 'Error: ' + err;
+      }
+    }
+
+    function advisorCard(a) {
+      const el = document.createElement('div');
+      el.className = 'card';
+      el.innerHTML = `<strong>${a.name || 'Unnamed'}</strong><div>${a.title || ''}</div><div class="small">${a.email || ''}</div>`;
+      return el;
+    }
+
+    function courseCard(c) {
+      const el = document.createElement('div');
+      el.className = 'card';
+      el.innerHTML = `<strong>${c.code || ''} ${c.name || 'Course'}</strong><div class="small">${c.description || ''}</div>`;
+      return el;
+    }
+
+    document.getElementById('get-recs').addEventListener('click', async () => {
+      try {
+        const res = await fetch(API_BASE + '/recommend', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({})});
+        const body = await res.json();
+        const list = body.recommendations || [];
+        const container = document.getElementById('recs');
+        container.innerHTML = '';
+        list.forEach(c => container.appendChild(courseCard(c)));
+      } catch (err) {
+        document.getElementById('recs').textContent = 'Error: ' + err;
+      }
+    });
+
+    // initial fetch
+    fetchAndRender('/advisors', 'advisor-list', advisorCard);
+    fetchAndRender('/courses', 'course-list', courseCard);
+  </script>
+</body>
+</html>

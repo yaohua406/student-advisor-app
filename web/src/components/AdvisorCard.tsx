@@ -1,17 +1,12 @@
+// Archived: this component was moved to `web/legacy-react/src/components/AdvisorCard.tsx`
+// Keep a minimal stub to avoid build errors. Use the legacy-react code instead.
 import React from 'react';
 
-interface AdvisorCardProps {
-  name: string;
-  expertise: string;
-  contact: string;
-}
-
-const AdvisorCard: React.FC<AdvisorCardProps> = ({ name, expertise, contact }) => {
+const AdvisorCard: React.FC<any> = ({ advisor }) => {
   return (
-    <div className="bg-white shadow-md rounded-lg p-4">
-      <h2 className="text-xl font-bold">{name}</h2>
-      <p className="text-gray-700">{expertise}</p>
-      <p className="text-gray-500">{contact}</p>
+    <div className="bg-yellow-50 border border-yellow-200 rounded p-3">
+      <strong>Archived Component</strong>
+      <div className="text-sm text-gray-600">See web/legacy-react/src/components/AdvisorCard.tsx</div>
     </div>
   );
 };
